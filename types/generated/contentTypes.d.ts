@@ -362,6 +362,172 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiPokemonPokemon extends Schema.CollectionType {
+  collectionName: 'pokemons';
+  info: {
+    singularName: 'pokemon';
+    pluralName: 'pokemons';
+    displayName: 'Pokemon';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    hp: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    attack: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    defense: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    speed: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    special: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    types: Attribute.Relation<
+      'api::pokemon.pokemon',
+      'oneToMany',
+      'api::type.type'
+    >;
+    picture: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    evolution: Attribute.Relation<
+      'api::pokemon.pokemon',
+      'oneToOne',
+      'api::pokemon.pokemon'
+    >;
+    preevolution: Attribute.Relation<
+      'api::pokemon.pokemon',
+      'oneToOne',
+      'api::pokemon.pokemon'
+    >;
+    PokedexId: Attribute.Integer &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::pokemon.pokemon',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::pokemon.pokemon',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::pokemon.pokemon',
+      'oneToMany',
+      'api::pokemon.pokemon'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiTypeType extends Schema.CollectionType {
+  collectionName: 'types';
+  info: {
+    singularName: 'type';
+    pluralName: 'types';
+    displayName: 'Type';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    strongs: Attribute.Relation<
+      'api::type.type',
+      'manyToMany',
+      'api::type.type'
+    >;
+    weakness: Attribute.Relation<
+      'api::type.type',
+      'manyToMany',
+      'api::type.type'
+    >;
+    weak: Attribute.Relation<'api::type.type', 'manyToMany', 'api::type.type'>;
+    resistant: Attribute.Relation<
+      'api::type.type',
+      'manyToMany',
+      'api::type.type'
+    >;
+    ineffectives: Attribute.Relation<
+      'api::type.type',
+      'oneToMany',
+      'api::type.type'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::type.type', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::type.type', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::type.type',
+      'oneToMany',
+      'api::type.type'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -778,6 +944,8 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::pokemon.pokemon': ApiPokemonPokemon;
+      'api::type.type': ApiTypeType;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
